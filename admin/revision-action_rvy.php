@@ -567,6 +567,7 @@ function rvy_revision_approve($revision_id = 0, $args = []) {
 			if (($db_action || !empty($args['force_notify'])) && rvy_get_option( 'rev_approval_notify_revisor' ) ) {
 				$title = sprintf(esc_html__('[%s] Revision Approval Notice', 'revisionary' ), $blogname );
 				$message = sprintf( esc_html__('The revision you submitted for the %1$s "%2$s" has been approved.', 'revisionary' ), $type_caption, $revision->post_title ) . "\r\n\r\n";
+				$message = str_replace($message, '&quot;', '"', $message);
 
 				if ( $scheduled ) {
 					$datef = __awp( 'M j, Y @ g:i a' );
@@ -1453,6 +1454,7 @@ function rvy_publish_scheduled_revisions($args = []) {
 				if (rvy_get_option( 'publish_scheduled_notify_revisor' ) && !$use_pp_notifications) {
 					$title = sprintf( esc_html__('[%s] %s Publication Notice', 'revisionary' ), $blogname, pp_revisions_status_label('future-revision', 'name') );
 					$message = sprintf( esc_html__('The scheduled revision you submitted for the %1$s "%2$s" has been published.', 'revisionary' ), $type_caption, $row->post_title ) . "\r\n\r\n";
+					$message = str_replace($message, '&quot;', '"', $message);
 
 					if ( ! empty($post->ID) )
 						$message .= esc_html__( 'View it online: ', 'revisionary' ) . $published_url . "\r\n";
@@ -1477,6 +1479,7 @@ function rvy_publish_scheduled_revisions($args = []) {
 				) {
 					$title = sprintf( esc_html__('[%s] %s Publication Notice', 'revisionary' ), $blogname, pp_revisions_status_label('future-revision', 'name') );
 					$message = sprintf( esc_html__('A scheduled revision to your %1$s "%2$s" has been published.', 'revisionary' ), $type_caption, $post->post_title ) . "\r\n\r\n";
+					$message = str_replace($message, '&quot;', '"', $message);
 
 					if ( $revisor = new WP_User( $row->post_author ) )
 						$message .= sprintf( esc_html__('It was submitted by %1$s.'), $revisor->display_name ) . "\r\n\r\n";
@@ -1539,7 +1542,8 @@ function rvy_publish_scheduled_revisions($args = []) {
 						$title = sprintf(esc_html__('[%s] %s Publication'), $blogname, pp_revisions_status_label('future-revision', 'name') );
 						
 						$message = sprintf( esc_html__('A scheduled revision to the %1$s "%2$s" has been published.'), $type_caption, $row->post_title ) . "\r\n\r\n";
-	
+						$message = str_replace($message, '&quot;', '"', $message);
+
 						if ( $author = new WP_User( $row->post_author ) )
 							$message .= sprintf( esc_html__('It was submitted by %1$s.'), $author->display_name ) . "\r\n\r\n";
 	
